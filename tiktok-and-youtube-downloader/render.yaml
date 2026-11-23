@@ -1,0 +1,22 @@
+# Blueprint de Render: https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: descargador-videos
+    runtime: docker
+    plan: starter            # "free" funciona, pero tiene 512 MB y se duerme tras 15 min sin tráfico
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MAX_CONCURRENT_JOBS
+        value: "2"
+      - key: MAX_PLAYLIST_ITEMS
+        value: "50"
+      - key: JOB_TTL_MINUTES
+        value: "15"
+      # ---- Opcionales (YouTube bloquea IPs de servidores; ver README) ----
+      - key: YT_COOKIES          # contenido de un cookies.txt (formato Netscape)
+        sync: false
+      - key: YTDLP_PROXY         # ej: http://usuario:clave@host:puerto
+        sync: false
